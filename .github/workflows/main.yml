@@ -46,21 +46,6 @@ jobs:
           sarif_file: snyk.sarif
          
 
-      # - name: Convert SARIF to HTML
-      #   uses: sebastianpopp/sarif2html-action@v1
-      #   with:
-      #    input: snyk.sarif
-      #    output: snyk-report.html
-
-      # - name: Upload HTML report as artifact
-      #   uses: actions/upload-artifact@v2
-      #   with:
-      #     name: snyk-report
-      #     path: snyk-report.html
-
-      # - name: Print Snyk report
-      #   run: cat snyk.sarif
-
       - name: Run Trivy vulnerability scanner in repo mode
         uses: aquasecurity/trivy-action@master
         with:
@@ -85,70 +70,10 @@ jobs:
           name: trivy result
           path: dependency-results.sbom.json
 
-      # - name: Setup Node.js
-      #   uses: actions/setup-node@v2
-      #   with:
-      #     node-version: 20.11.0
+      - name: Upload SARIF file
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+         sarif_file: trivy-results.sarif
 
-      # - name: Install dependencies
-      #   run: npm install
 
-      # - name: Build
-      #   run: npm run build
-
-      # - name: Archive build artifacts
-      #   uses: actions/upload-artifact@v2
-      #   with:
-      #     name: build
-      #     path: build/
-
-      # - name: Static Code Analysis for React.js
-      #   uses: sonarsource/sonarqube-scan-action@v2
-      #   with:
-      #     projectBaseDir: .
-      #     args: >
-      #       -Dsonar.organization=sonarintegration-1
-      #       -Dsonar.projectKey=sonarintegration-1_react-todo
-      #       -Dsonar.sources=src/
-      #       -Dsonar.host.url=https://sonarcloud.io
-      #       -Dsonar.projectName=React_Todo
-      #       -Dsonar.projectVersion=1.0
-      #       -Dsonar.sourceEncoding=UTF-8
-      #       -Dsonar.exclusions=**/*.test.js,**/__tests__/**
-      #   env:
-      #     SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-      #     SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-
-      # - name: Send notification on Slack using Webhooks - Success
-      #   if: ${{ always() }}
-      #   uses: slackapi/slack-github-action@v1.24.0
-      #   with:
-      #     payload: |
-      #       {
-      #         "text": "React project built successfully."
-      #       }
-      #   env:
-      #     SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-
-      # - name: Send notification on Slack using Webhooks - Failure
-      #   if: ${{ failure() }}
-      #   uses: slackapi/slack-github-action@v1.24.0
-      #   with:
-      #     payload: |
-      #       {
-      #         "text": "React build failed. Please check the build logs for details."
-      #       }
-      #   env:
-      #     SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-
-      # - name: Install JFrog CLI
-      #   run: |
-      #     curl -fL https://getcli.jfrog.io | sh
-      #     chmod +x jfrog
-      #     mv jfrog /usr/local/bin/
-
-      # - name: Configure npm Authentication
-      #   run: |
-      #     echo "//shubhamtodo.jfrog.io/artifactory/react_todo-npm-local/:_authToken=${{ secrets.JFROG_AUTH_TOKEN }}" >> ~/.npmrc
-      #     echo "email=shubhamchav@cybage.com" >> ~/.npmrc
-      #     echo "always-auth=true" >> ~/.npmrc
+    
