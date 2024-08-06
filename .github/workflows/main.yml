@@ -40,23 +40,23 @@ jobs:
       - name: List directory contents
         run: ls -la
 
-      # - name: Upload SARIF file
-      #   uses: github/codeql-action/upload-sarif@v3
-      #   with:
-      #     sarif_file: snyk.sarif
-      #     category: my-analysis-tool
+      - name: Upload SARIF file
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: snyk.sarif
+         
 
-      # - name: Convert SARIF to HTML
-      #   uses: sebastianpopp/sarif2html-action@v1
-      #   with:
-      #    input: snyk.sarif
-      #    output: snyk-report.html
+      - name: Convert SARIF to HTML
+        uses: sebastianpopp/sarif2html-action@v1
+        with:
+         input: snyk.sarif
+         output: snyk-report.html
 
-      # - name: Upload HTML report as artifact
-      #   uses: actions/upload-artifact@v2
-      #   with:
-      #     name: snyk-report
-      #     path: snyk-report.html
+      - name: Upload HTML report as artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: snyk-report
+          path: snyk-report.html
 
       # - name: Print Snyk report
       #   run: cat snyk.sarif
